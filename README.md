@@ -3,6 +3,7 @@ Credit Scoring Model for Bati Bank's Buy-Now-Pay-Later Service. This project aim
 
 
 # Folder Structure
+```
 +---.github
 | └── workflows
 | └── blank.yml
@@ -23,3 +24,4 @@ Credit Scoring Model for Bati Bank's Buy-Now-Pay-Later Service. This project aim
 | ├── .gitignore
 | ├── README.md
 | └── requirements.txt
+```
