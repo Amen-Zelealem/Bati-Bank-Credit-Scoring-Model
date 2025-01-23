@@ -48,3 +48,22 @@ class TestCreditRiskAnalysis(unittest.TestCase):
         self.assertIn("CreditScore      int64", output)
         self.assertIn("Missing Values Overview:", output)
         self.assertIn("Age    1", output)  # Check for missing values
+
+    def test_summary_statistics(self):
+        # Generate summary statistics
+        summary_stats = self.eda.summary_statistics()
+
+        # Check the shape of the summary statistics
+        self.assertEqual(summary_stats.shape[0], 3, "Expected 3 statistics for the numeric columns.")
+        self.assertEqual(summary_stats.shape[1], 15, "Expected 15 statistics columns in the summary.")
+
+        # Check specific statistical values for the 'Age' column
+        self.assertAlmostEqual(summary_stats.loc['Age', 'mean'], 30.0, places=1, 
+                            msg="Mean of 'Age' should be approximately 30.0.")
+        self.assertAlmostEqual(summary_stats.loc['Age', 'median'], 30.0, places=1, 
+                            msg="Median of 'Age' should be approximately 30.0.")
+        self.assertAlmostEqual(summary_stats.loc['Age', 'std'], 5.0, places=1, 
+                            msg="Standard deviation of 'Age' should be approximately 5.0.")
+        self.assertAlmostEqual(summary_stats.loc['Age', 'skewness'], 0.0, places=1, 
+                            msg="Skewness of 'Age' should be close to 0.")
+
