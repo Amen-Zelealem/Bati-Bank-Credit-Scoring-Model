@@ -217,3 +217,29 @@ class CreditRiskAnalysis:
         sns.heatmap(corr_matrix, annot=True, cmap='cool', linewidths=0.5)
         plt.title('Correlation Matrix', fontsize=16)
         plt.show()
+
+    def detect_outliers(self, cols):
+            """
+            Function to plot boxplots for numerical features to detect outliers.
+            
+            Parameters:
+            -----------
+            cols : list
+                List of numerical columns to plot.
+            """
+            # Check if the provided columns exist in the DataFrame
+            for col in cols:
+                if col not in self.df.columns:
+                    print(f"Warning: {col} is not in the DataFrame.")
+                    return
+
+            plt.figure(figsize=(15, 10))
+            for i, col in enumerate(cols, 1):
+                plt.subplot(3, 3, i)
+                sns.boxplot(y=self.df[col], color='orange')
+                plt.title(f'Boxplot of {col}', fontsize=12)
+                plt.ylabel(col)
+
+            plt.tight_layout()
+            plt.show()
+            print("✅ Boxplots displayed for outlier detection.")
