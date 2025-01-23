@@ -134,3 +134,33 @@ class CreditRiskAnalysis:
 
         plt.suptitle('Distribution of Numeric Variables', fontsize=20, fontweight='bold', y=1.02)
         plt.show()
+
+        # Function to plot skewness for each numerical feature
+    def plot_skewness(self):
+        df = self.df.select_dtypes(include='number')
+        skewness = df.skew().sort_values(ascending=False)
+        
+        plt.figure(figsize=(12, 6))
+        
+        # Create a bar plot with the correct hue assignment
+        sns.barplot(x=skewness.index, y=skewness.values, hue=skewness.index, palette="pastel", edgecolor='black', legend=False)
+        
+        # Adding gridlines for better readability
+        plt.axhline(0, color='grey', linewidth=0.8, linestyle='--')
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+
+        # Title and labels
+        plt.title("Skewness of Numerical Features", fontsize=18, fontweight='bold')
+        plt.xlabel("Features", fontsize=14)
+        plt.ylabel("Skewness", fontsize=14)
+        
+        # Customize ticks
+        plt.xticks(rotation=45, fontsize=12)
+        plt.yticks(fontsize=12)
+
+        # Adding value labels on top of the bars
+        for index, value in enumerate(skewness):
+            plt.text(index, value, f'{value:.2f}', ha='center', va='bottom', fontsize=10, color='black')
+
+        plt.tight_layout()
+        plt.show()
