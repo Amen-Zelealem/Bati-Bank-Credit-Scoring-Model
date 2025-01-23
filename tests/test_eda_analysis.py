@@ -4,6 +4,7 @@ from io import StringIO
 import numpy as np
 import sys
 import os
+import matplotlib.pyplot as plt
 
 # Add the scripts directory to the path
 sys.path.insert(
@@ -67,3 +68,29 @@ class TestCreditRiskAnalysis(unittest.TestCase):
         self.assertAlmostEqual(summary_stats.loc['Age', 'skewness'], 0.0, places=1, 
                             msg="Skewness of 'Age' should be close to 0.")
 
+    def test_plot_numerical_distribution(self):
+        # Create a sample DataFrame with numeric columns
+        data = {
+            'A': np.random.normal(loc=0, scale=1, size=100),
+            'B': np.random.normal(loc=5, scale=2, size=100),
+            'C': np.random.normal(loc=-5, scale=1.5, size=100)
+        }
+        test_df = pd.DataFrame(data)
+        self.eda.df = test_df  # Set the DataFrame for testing
+
+        # List of numeric columns to plot
+        numeric_cols = ['A', 'B', 'C']
+        print(f"Starting plot for columns: {numeric_cols}")  # Debugging line
+        
+        # Test if the plot function runs without errors
+        try:
+            self.eda.plot_numerical_distribution(numeric_cols)
+        except Exception as e:
+            self.fail(f"plot_numerical_distribution raised {type(e).__name__} unexpectedly: {e}")
+
+        # Ensure that a figure was created
+        fig = plt.gcf()
+        self.assertIsNotNone(fig, "No figure was created.")
+       
+if __name__ == '__main__':
+    unittest.main()
