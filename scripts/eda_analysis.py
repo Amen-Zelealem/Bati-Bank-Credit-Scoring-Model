@@ -208,3 +208,12 @@ class CreditRiskAnalysis:
         plt.tight_layout()
         plt.suptitle('Categorical Feature Distributions', fontsize=18, fontweight='bold', y=1.02)
         plt.show()
+
+
+    def correlation_analysis(self):
+        """Prepare and visualize the correlation matrix."""
+        corr_matrix = self.df.corr()
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(corr_matrix, annot=True, cmap='cool', linewidths=0.5)
+        plt.title('Correlation Matrix', fontsize=16)
+        plt.show()
