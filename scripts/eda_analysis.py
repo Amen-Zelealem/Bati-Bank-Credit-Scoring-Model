@@ -50,3 +50,43 @@ class CreditRiskAnalysis:
         # Footer
         print("========================================")
             
+    def summary_statistics(self):
+        """
+        Function to compute summary statistics like mean, median, std, skewness, etc.
+        
+        Parameters:
+        -----------
+        df : pandas.DataFrame
+            The DataFrame containing the dataset to be analyzed.
+        
+        Returns:
+        --------
+        summary_stats : pandas.DataFrame
+            DataFrame containing the summary statistics for numeric columns.
+        """
+        # Select numeric columns
+        numeric_df = self.df.select_dtypes(include='number')
+        
+        # Calculate basic summary statistics
+        summary_stats = numeric_df.describe().T
+        
+        # Add additional statistics
+        summary_stats['median'] = numeric_df.median()
+        summary_stats['mode'] = numeric_df.mode().iloc[0]
+        summary_stats['skewness'] = numeric_df.skew()
+        summary_stats['kurtosis'] = numeric_df.kurtosis()
+        
+        # Calculate additional statistics for dispersion
+        summary_stats['range'] = numeric_df.max() - numeric_df.min()
+        summary_stats['variance'] = numeric_df.var()
+        
+        # Calculate interquartile range (IQR) for dispersion
+        summary_stats['IQR'] = numeric_df.quantile(0.75) - numeric_df.quantile(0.25)
+        
+        # Rename index for clarity
+        summary_stats.index.name = 'Statistic'
+        
+        # Print summary statistics
+        print("Summary Statistics:\n", summary_stats)
+        
+        return summary_stats
