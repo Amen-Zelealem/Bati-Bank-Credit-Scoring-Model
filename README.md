@@ -55,6 +55,25 @@ This Task-1 EDA Analysis includes a comprehensive analysis of financial transact
 ## Outlier Analysis
 - Significant outliers identified in `Amount` and `Value`, warranting further investigation.
 
+## Task-2 **Feature Engineering Process**
+
+The feature engineering process involves several key steps to prepare the dataset for analysis and model training:
+
+## **Steps Involved**
+
+1. **Encoding Categorical Variables**:
+   - Categorical variables were encoded using one-hot encoding to convert them into a numerical format suitable for machine learning algorithms.
+
+2. **Standardizing Numerical Features**:
+   - Numerical features were standardized using the `StandardScaler`. This ensures consistency in scale across features, which is crucial for many machine learning models.
+
+3. **Handling Missing Values**:
+   - During the feature engineering process, the new feature `Std_Transaction_Amount` was found to have **712 missing values**. To ensure data completeness, these missing values were imputed with the mean of the feature.
+
+## **Summary**
+
+These steps improve the quality of the dataset, making it more suitable for further analysis and predictive modeling. Proper encoding, scaling, and handling of missing values are essential for building effective machine learning models.
+
 
 # Folder Structure
 ```
@@ -65,20 +84,26 @@ This Task-1 EDA Analysis includes a comprehensive analysis of financial transact
 | └── settings.json
 +---notebooks
 | ├── init.ipynb
+| ├── eda_analysis.ipynb
+| ├── feature_engineering.ipynb
 | └── README.md
 +---scripts
 | ├── init.py
+| ├── data_loader.py
+| ├── eda_analysis.py
+| ├── feature_engineering.py
 | └── README.md
 +---src
 | └── README.md
 | └── init.py
 +---tests
-| ├── README.md
 | └── init.py
+| ├── README.md
+| └── test_data_loader.py
+| └── test_eda_analysis.py
+| └── test_feature_engineering.py
 | ├── .gitignore
+| ├── LICENSE
 | ├── README.md
 | └── requirements.txt
 ```
-
-# Conclusion
-The dataset offers valuable insights into financial transactions, which will inform the credit scoring model for Bati Bank. Addressing skewness and outliers will enhance predictive performance and model reliability.
