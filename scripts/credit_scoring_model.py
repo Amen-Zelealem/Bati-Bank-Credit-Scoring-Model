@@ -1,3 +1,4 @@
+# Import libraries
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -36,6 +37,7 @@ class CreditScoreRFM:
             rfm_data['m_quartile'].astype(int) * 0.45
         )
         return rfm_data
+    
 
     def assign_label(self, rfm_data):
         low_threshold = rfm_data['RFM_Score'].quantile(0.5)
@@ -51,7 +53,7 @@ class CreditScoreRFM:
     def plot_heatmap(self):
         sns.set_palette("pastel")
         corr = self.rfm_data[['Recency', 'Frequency', 'Monetary']].corr()
-        sns.heatmap(corr, annot=True, cmap='cool', fmt=".2f")
+        sns.heatmap(corr, annot=True, cmap='viridis', fmt=".2f")
         plt.title('Correlation Matrix of RFM Variables')
         plt.show()
 
@@ -70,3 +72,29 @@ class CreditScoreRFM:
 
         plt.tight_layout()
         plt.show()
+
+    def calculate_counts(self, data):
+        """
+        Calculate good and bad counts for each RFM_bin.
+        """
+        grouped_data = data.groupby('RFM_bin')
+        good_count = grouped_data['Risk_Label'].apply(lambda x: (x == 'Good').sum())
+        bad_count = grouped_data['Risk_Label'].apply(lambda x: (x == 'Bad').sum())
+        
+        return good_count, bad_count
+    
+    def calculate_woe(self, good_count, bad_count):
+        total_good = good_count.sum()
+        total_bad = bad_count.sum()
+
+        # Add epsilon (small value) to avoid log(0) or division by zero
+        epsilon = 1e-10
+        
+        good_rate = good_count / (total_good + epsilon)  # Avoid division by zero
+        bad_rate = bad_count / (total_bad + epsilon)     # Avoid division by zero
+
+        # Calculate WoE
+        woe = np.log((good_rate + epsilon) / (bad_rate + epsilon))  # Add epsilon to rates
+        
+        # Return WoE as a Series with the same index as good_count
+        return pd.Series(woe, index=good_count.index)
