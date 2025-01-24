@@ -52,3 +52,26 @@ class FeatureEngineering:
         df = df.merge(agg_features, on='CustomerId', how='left')
         return df
 
+    @staticmethod
+    def extract_time_features(df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Extracts time-related features from the TransactionStartTime column.
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The DataFrame containing transaction data.
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with added time-related features and the original TransactionStartTime removed.
+        """
+        df['TransactionStartTime'] = pd.to_datetime(df['TransactionStartTime'])
+        df['Transaction_Hour'] = df['TransactionStartTime'].dt.hour
+        df['Transaction_Day'] = df['TransactionStartTime'].dt.day
+        df['Transaction_Month'] = df['TransactionStartTime'].dt.month
+        df['Transaction_Year'] = df['TransactionStartTime'].dt.year
+        
+        return df
+
