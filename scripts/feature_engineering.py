@@ -123,3 +123,33 @@ class FeatureEngineering:
             df.dropna(inplace=True)
 
         return df
+
+    @staticmethod
+    def normalize_numerical_features(df: pd.DataFrame, numerical_cols: list, method: str = 'standardize') -> pd.DataFrame:
+        """
+        Normalizes or standardizes numerical features.
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The DataFrame with numerical features.
+        numerical_cols : list
+            List of numerical columns to normalize/standardize.
+        method : str, optional
+            The method for scaling ('standardize' or 'normalize').
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with normalized or standardized numerical features.
+        """
+        if method == 'standardize':
+            scaler = StandardScaler()
+        elif method == 'normalize':
+            scaler = MinMaxScaler()
+
+        df[numerical_cols] = scaler.fit_transform(df[numerical_cols])
+        # Set the TransactionId to index 
+        df.set_index('TransactionId', inplace=True)
+        
+        return df
