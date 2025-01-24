@@ -75,3 +75,26 @@ class FeatureEngineering:
         
         return df
 
+    @staticmethod
+    def encode_categorical_features(df: pd.DataFrame, categorical_cols: list) -> pd.DataFrame:
+        """
+        Encodes categorical variables into numerical format using One-Hot or Label Encoding.
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The DataFrame containing categorical data.
+        categorical_cols : list
+            List of categorical columns to encode.
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with encoded categorical features.
+        """
+        # Label Encoding for all categorical columns
+        label_encoder = LabelEncoder()
+        for col in categorical_cols:
+            df[col] = label_encoder.fit_transform(df[col].astype(str))  # Ensure values are numeric
+        
+        return df
