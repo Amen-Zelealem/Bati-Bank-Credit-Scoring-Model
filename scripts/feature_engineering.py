@@ -98,3 +98,28 @@ class FeatureEngineering:
             df[col] = label_encoder.fit_transform(df[col].astype(str))  # Ensure values are numeric
         
         return df
+
+    @staticmethod
+    def handle_missing_values(df: pd.DataFrame, strategy: str = 'mean') -> pd.DataFrame:
+        """
+        Handles missing values by imputation or removal.
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The DataFrame with missing values.
+        strategy : str, optional
+            The strategy for handling missing values ('mean', 'median', 'mode', 'remove').
+
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame with handled missing values.
+        """
+        if strategy in ['mean', 'median', 'mode']:
+            imputer = SimpleImputer(strategy=strategy)
+            df[df.select_dtypes(include=[np.number]).columns] = imputer.fit_transform(df.select_dtypes(include=[np.number]))
+        elif strategy == 'remove':
+            df.dropna(inplace=True)
+
+        return df
