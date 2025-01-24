@@ -66,5 +66,24 @@ This notebook provides a comprehensive analysis of a dataset containing financia
 ## Recommendations
 - **Handling Outliers**: Utilize robust scaling methods or transformations (e.g., logarithmic scaling) to normalize distributions.
 
+# **Feature Engineering Process**
+
+The feature engineering process involves several key steps to prepare the dataset for analysis and model training:
+
+## **Steps Involved**
+
+1. **Encoding Categorical Variables**:
+   - Categorical variables were encoded using one-hot encoding to convert them into a numerical format suitable for machine learning algorithms.
+
+2. **Standardizing Numerical Features**:
+   - Numerical features were standardized using the `StandardScaler`. This ensures consistency in scale across features, which is crucial for many machine learning models.
+
+3. **Handling Missing Values**:
+   - During the feature engineering process, the new feature `Std_Transaction_Amount` was found to have **712 missing values**. To ensure data completeness, these missing values were imputed with the mean of the feature.
+
+## **Summary**
+
+These steps improve the quality of the dataset, making it more suitable for further analysis and predictive modeling. Proper encoding, scaling, and handling of missing values are essential for building effective machine learning models.
+
 ## Conclusion
 The dataset offers valuable insights into financial transactions, with specific attributes requiring further investigation for effective modeling. The findings highlight the importance of addressing skewness and outliers to enhance predictive performance.
