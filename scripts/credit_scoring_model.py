@@ -12,19 +12,49 @@ class CreditScoreRFM:
     def __init__(self, rfm_data):
         self.rfm_data = rfm_data
 
+    # def calculate_rfm(self):
+    #     self.rfm_data['TransactionStartTime'] = pd.to_datetime(self.rfm_data['TransactionStartTime'])
+    #     end_date = pd.Timestamp.utcnow()
+    #     self.rfm_data['Last_Access_Date'] = self.rfm_data.groupby('CustomerId')['TransactionStartTime'].transform('max')
+    #     self.rfm_data['Recency'] = (end_date - self.rfm_data['Last_Access_Date']).dt.days
+    #     self.rfm_data['Frequency'] = self.rfm_data.groupby('CustomerId')['TransactionId'].transform('count')
+
+    #     if 'Amount' in self.rfm_data.columns:
+    #         self.rfm_data['Monetary'] = self.rfm_data.groupby('CustomerId')['Amount'].transform('sum')
+    #     else:
+    #         self.rfm_data['Monetary'] = 1
+
+    #     rfm_data = self.rfm_data[['CustomerId', 'Recency', 'Frequency', 'Monetary']].drop_duplicates()
+    #     return rfm_data
+
     def calculate_rfm(self):
-        self.rfm_data['TransactionStartTime'] = pd.to_datetime(self.rfm_data['TransactionStartTime'])
-        end_date = pd.Timestamp.utcnow()
+        # Convert TransactionStartTime to datetime format
+        if not pd.api.types.is_datetime64_any_dtype(self.rfm_data['TransactionStartTime']):
+            self.rfm_data['TransactionStartTime'] = pd.to_datetime(self.rfm_data['TransactionStartTime'])
+
+        # Define the end date (most recent transaction date)
+        end_date = self.rfm_data['TransactionStartTime'].max()
+
+        # Calculate Recency
         self.rfm_data['Last_Access_Date'] = self.rfm_data.groupby('CustomerId')['TransactionStartTime'].transform('max')
         self.rfm_data['Recency'] = (end_date - self.rfm_data['Last_Access_Date']).dt.days
-        self.rfm_data['Frequency'] = self.rfm_data.groupby('CustomerId')['TransactionId'].transform('count')
 
+        # Calculate Frequency (use TransactionStartTime instead of TransactionId)
+        self.rfm_data['Frequency'] = self.rfm_data.groupby('CustomerId')['TransactionStartTime'].transform('count')
+
+        # Calculate Monetary (use the Amount column)
         if 'Amount' in self.rfm_data.columns:
             self.rfm_data['Monetary'] = self.rfm_data.groupby('CustomerId')['Amount'].transform('sum')
         else:
-            self.rfm_data['Monetary'] = 1
+            raise KeyError("The 'Amount' column is missing in the data. Cannot calculate Monetary value.")
 
-        return self.rfm_data[['CustomerId', 'Recency', 'Frequency', 'Monetary']].drop_duplicates()
+        # Drop duplicate rows to avoid duplicate RFM entries for each CustomerId
+        self.rfm_data = self.rfm_data.drop_duplicates(subset='CustomerId')
+
+        # Return the DataFrame with Recency, Frequency, and Monetary metrics
+        return self.rfm_data[['CustomerId', 'Recency', 'Frequency', 'Monetary']]
+
+
 
     def calculate_rfm_scores(self, rfm_data):
         rfm_data['r_quartile'] = pd.qcut(rfm_data['Recency'], 4, labels=['4', '3', '2', '1'])
@@ -36,8 +66,10 @@ class CreditScoreRFM:
             rfm_data['f_quartile'].astype(int) * 0.45 +
             rfm_data['m_quartile'].astype(int) * 0.45
         )
+        low_threshold = rfm_data['RFM_Score'].quantile(0.5)
+        rfm_data['Risk_Label'] = rfm_data['RFM_Score'].apply(lambda x: 'Good' if x >= low_threshold else 'Bad')
         return rfm_data
-    
+
 
     def assign_label(self, rfm_data):
         low_threshold = rfm_data['RFM_Score'].quantile(0.5)
