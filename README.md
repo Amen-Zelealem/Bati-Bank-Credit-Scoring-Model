@@ -1,7 +1,7 @@
 # Bati-Bank-Credit-Scoring-Model
 Credit Scoring Model for Bati Bank's Buy-Now-Pay-Later Service. This project aims to develop a robust credit scoring system by defining risk categories, selecting predictive features, and creating models to estimate risk probabilities, credit scores, and optimal loan terms based on data from a partnering eCommerce platform.
 
-## Task-1 Project Overview EDA Analysis
+## Project Overview EDA Analysis
 This Task-1 EDA Analysis includes a comprehensive analysis of financial transactions to inform the credit scoring model. The objectives are to understand the dataset's structure, summarize its statistics, and explore relationships between features.
 
 ## Completed Tasks
@@ -55,7 +55,7 @@ This Task-1 EDA Analysis includes a comprehensive analysis of financial transact
 ## Outlier Analysis
 - Significant outliers identified in `Amount` and `Value`, warranting further investigation.
 
-## Task-2 **Feature Engineering Process**
+## **Feature Engineering Process**
 
 The feature engineering process involves several key steps to prepare the dataset for analysis and model training:
 
@@ -73,6 +73,36 @@ The feature engineering process involves several key steps to prepare the datase
 ## **Summary**
 
 These steps improve the quality of the dataset, making it more suitable for further analysis and predictive modeling. Proper encoding, scaling, and handling of missing values are essential for building effective machine learning models.
+
+## **Modeling**
+
+### **Model Selection and Training**
+
+### **Split the Data**
+Divide the dataset into training and testing sets to evaluate model performance on unseen data.
+
+### **Choose Models**
+Select at least two models from the following options:
+- Logistic Regression
+- Decision Trees
+- Random Forest
+- Gradient Boosting Machines (GBM)
+
+### **Train the Models**
+Train the selected models on the training dataset.
+
+### **Hyperparameter Tuning**
+Enhance model performance through hyperparameter tuning using techniques like:
+- Grid Search
+- Random Search
+
+## **Model Evaluation**
+Assess model performance using metrics such as:
+- **Accuracy**: Ratio of correctly predicted observations to total observations.
+- **Precision**: Ratio of correctly predicted positive observations to total predicted positives.
+- **Recall (Sensitivity)**: Ratio of correctly predicted positive observations to all actual positives.
+- **F1 Score**: Weighted average of Precision and Recall.
+- **ROC-AUC**: Area Under the Receiver Operating Characteristic Curve, measuring the model's ability to distinguish between classes.
 
 
 # Folder Structure
