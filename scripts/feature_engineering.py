@@ -52,6 +52,40 @@ class FeatureEngineering:
         df = df.merge(agg_features, on='CustomerId', how='left')
         return df
 
+
+    @staticmethod
+    def create_transaction_features(df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Creates features based on transaction types (debit/credit) and their ratios.
+
+        Parameters
+        ----------
+        df : pd.DataFrame
+            The DataFrame containing transaction data.
+
+        Returns
+        -------
+        pd.DataFrame
+            The DataFrame with new transaction-based features.
+        """
+        # Group by 'CustomerId' to calculate net transaction amount
+        transaction_features = df.groupby('CustomerId').agg(
+            Net_Transaction_Amount=('Amount', 'sum'),
+            Debit_Count=('Amount', lambda x: (x > 0).sum()),
+            Credit_Count=('Amount', lambda x: (x < 0).sum())
+        ).reset_index()
+
+        # Calculate the debit/credit ratio and handle division by zero
+        transaction_features['Debit_Credit_Ratio'] = transaction_features['Debit_Count'] / (
+            transaction_features['Credit_Count'] + 1)  # Adding 1 to avoid division by zero
+
+        # Merge the new features back to the original DataFrame on 'CustomerId'
+        df = pd.merge(df, transaction_features, on='CustomerId', how='left')
+
+        return df
+
+
+
     @staticmethod
     def extract_time_features(df: pd.DataFrame) -> pd.DataFrame:
         """
