@@ -54,8 +54,15 @@ class InputData(BaseModel):
 
 @app.get("/")
 async def read_root():
-    return {"message": "Welcome to the Credit Scoring API"}
-
+    return {
+        "message": "Welcome to Bati Bank Credit Scoring API!",
+        "description": "This API allows you to make predictions about credit scoring.",
+        "instructions": (
+            "To explore the API and test its endpoints, please visit "
+            "the Swagger documentation at: /docs"
+        ),
+        "note": "Make sure to use the base URL followed by /docs."
+    }
 
 @app.post("/predict")
 async def predict(input_data: InputData):
