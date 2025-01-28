@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, ValidationError
 from datetime import datetime
+import uvicorn
 import sys
 import os
 import numpy as np
