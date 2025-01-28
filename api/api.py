@@ -25,7 +25,7 @@ logging.basicConfig(
 
 # Load the model using joblib (instead of pickle)
 try:
-    with open("model/best_models.pkl", "rb") as f:
+    with open("model/best_model.pkl", "rb") as f:
         model = joblib.load(f)
     logging.info("Model loaded successfully.")
     print(f"Loaded model type: {type(model)}")
